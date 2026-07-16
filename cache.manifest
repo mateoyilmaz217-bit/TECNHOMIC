@@ -1,9 +1,14 @@
-CACHE MANIFEST
-# TECNHOMIC Host V2.0
+CACHE MANIFEST 
 
+# v1.0.0
+# TECNHOMIC PSFree Host Offline Cache
+
+CACHE:
 index.html
-cache.html
 goldhen.bin
+style.css
+lang.js
+theme.js
 
 NETWORK:
 *
