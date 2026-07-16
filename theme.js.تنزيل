@@ -1,0 +1,55 @@
+function toggleTheme() {
+    try {
+        var current = localStorage.getItem('ui_theme') || 'green';
+        var next;
+        if (current === 'green') {
+            next = 'oled';
+        } else if (current === 'oled') {
+            next = 'terminal';
+        } else if (current === 'terminal') {
+            next = 'dark';
+        } else {
+            /* current === 'dark' أو أي قيمة غير معرّفة → تعود للبداية */
+            next = 'green';
+        }
+        localStorage.setItem('ui_theme', next);
+        document.documentElement.setAttribute('data-theme', next);
+        updateToggleButton(next);
+    } catch (e) {
+        /* toggle failed silently */
+    }
+}
+
+function updateToggleButton(theme) {
+    var btn = document.getElementById('themeToggleBtn');
+    if (!btn) { return; }
+    var labelMap = {
+        'green':    'التبديل إلى OLED',
+        'oled':     'التبديل إلى Terminal',
+        'terminal': 'التبديل إلى Dark',
+        'dark':     'التبديل إلى Green'
+    };
+    btn.setAttribute('aria-label', labelMap[theme] || 'Toggle theme');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var t = localStorage.getItem('ui_theme') || 'green';
+    document.documentElement.setAttribute('data-theme', t);
+    updateToggleButton(t);
+});
+
+(function() {
+    document.addEventListener('click', function(e) {
+        var target = e.target;
+        while (target && target !== document) {
+            if (target.classList && target.classList.contains('ripple-btn')) {
+                target.classList.add('ripple-active');
+                (function(el) {
+                    setTimeout(function() { el.classList.remove('ripple-active'); }, 300);
+                })(target);
+                break;
+            }
+            target = target.parentNode;
+        }
+    });
+})();
