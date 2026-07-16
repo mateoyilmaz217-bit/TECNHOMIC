@@ -5,42 +5,32 @@
 <title>TECNHOMIC PSFree Host</title>
 <style>
 body {
-  background-color: #003714;
-  background-image: radial-gradient(circle, #005a20 0%, #001f0a 100%);
-  color: white;
+  background-color: #ffffff;
+  color: #000000;
   font-family: sans-serif;
   text-align: center;
   margin: 0;
-  overflow: hidden;
 }
 .info {
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 50px;
 }
 #bar {
-  background: #00ff66;
-  height: 20px;
+  background: #000000;
+  height: 10px;
   width: 0%;
-  border-radius: 10px;
   transition: width 0.1s ease-in-out;
-  box-shadow: 0 0 15px #00ff66;
 }
 #bar_container {
-  background: #00220a;
-  border: 2px solid #00ff66;
-  border-radius: 12px;
-  width: 400px;
-  height: 20px;
+  background: #eeeeee;
+  border: 1px solid #000000;
+  width: 300px;
+  height: 10px;
   margin: 20px auto;
   overflow: hidden;
 }
 #status {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(0,255,102,0.5);
 }
 </style>
 <script>
@@ -63,7 +53,7 @@ window.applicationCache.addEventListener("error", function(){window.location.hre
 </head>
 <body>
 <div class="info">
-  <h1 style="font-size: 40px; margin-bottom: 5px;">TECNHOMIC PSFree Host</h1>
+  <h1 style="font-size: 32px; margin-bottom: 5px;">TECNHOMIC PSFree Host</h1>
   <div id="status" style="margin-top: 20px;">جاري الاتصال...</div>
   <div id="bar_container">
     <div id="bar"></div>
