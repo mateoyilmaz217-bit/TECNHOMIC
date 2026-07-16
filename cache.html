@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" manifest="cache.manifest">
 <head>
     <meta charset="UTF-8">
-    <title>TECNHOMIC - كاش التعديل</title>
+    <title>TECNHOMIC - كاش التعديل التلقائي</title>
     <style>
         body {
             background-color: #0d0d0d;
@@ -66,7 +66,7 @@
 
     <div class="cache-card">
         <h1>TECN<span>HOMIC</span></h1>
-        <div class="status-msg" id="status">جاري الاتصال وحفظ كاش التعديل أوفلاين...</div>
+        <div class="status-msg" id="status">جاري التثبيت وحفظ كاش التعديل تلقائياً...</div>
         <div class="progress-outline">
             <div class="progress-fill" id="bar"></div>
         </div>
@@ -80,7 +80,7 @@
         var status = document.getElementById("status");
 
         cache.addEventListener('downloading', function() {
-            status.innerText = "جاري تحميل ملفات تكنوميك وحفظها داخل جهازك...";
+            status.innerText = "جاري تحميل الملفات وحفظها في ذاكرة جهازك...";
         }, false);
 
         cache.addEventListener('progress', function(e) {
@@ -90,7 +90,7 @@
         }, false);
 
         cache.addEventListener('cached', function() {
-            status.innerText = "اكتمل تثبيت الكاش بنجاح! يمكنك الآن تشغيل التعديل بدون إنترنت.";
+            status.innerText = "اكتمل تثبيت الكاش بنجاح! جاري الانتقال لتشغيل التعديل...";
             setTimeout(function() {
                 window.location.href = "index.html";
             }, 1500);
@@ -102,7 +102,11 @@
         }, false);
 
         cache.addEventListener('error', function() {
-            status.innerText = "خطأ في الاتصال، تأكد من الشبكة وجرب مجدداً.";
+            // في حال عدم توفر الاتصال أو وجود خطأ، يحولك مباشرة للصفحة الرئيسية لتعمل من الكاش القديم
+            status.innerText = "يعمل الآن من الكاش المخزن سابقاً...";
+            setTimeout(function() {
+                window.location.href = "index.html";
+            }, 1000);
         }, false);
     </script>
 </body>
