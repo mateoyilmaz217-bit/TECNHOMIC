@@ -1,113 +1,73 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" manifest="cache.manifest">
+<html manifest="cache.manifest">
 <head>
-    <meta charset="UTF-8">
-    <title>TECNHOMIC - كاش التعديل التلقائي</title>
-    <style>
-        body {
-            background-color: #0d0d0d;
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .cache-card {
-            background: rgba(20, 20, 20, 0.85);
-            border: 2px solid #ff6600;
-            box-shadow: 0 0 30px rgba(255, 102, 0, 0.25);
-            border-radius: 16px;
-            padding: 40px;
-            width: 80%;
-            max-width: 550px;
-        }
-        h1 {
-            color: #ffffff;
-            margin: 0 0 10px 0;
-            font-size: 38px;
-            font-weight: 900;
-        }
-        h1 span {
-            color: #ff6600;
-        }
-        .progress-outline {
-            background: #050505;
-            border-radius: 6px;
-            height: 20px;
-            width: 100%;
-            overflow: hidden;
-            border: 1px solid rgba(255, 102, 0, 0.3);
-            margin: 25px 0;
-        }
-        .progress-fill {
-            background: linear-gradient(90deg, #ff8c00, #ff5500);
-            height: 100%;
-            width: 0%;
-            transition: width 0.2s ease-in-out;
-        }
-        .status-msg {
-            font-size: 18px;
-            color: #a0a0a0;
-        }
-        .percentage {
-            font-size: 24px;
-            color: #ff6600;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
+<meta charset="utf-8">
+<title>TECNHOMIC PSFree Host</title>
+<style>
+body {
+  background-color: #003714;
+  background-image: radial-gradient(circle, #005a20 0%, #001f0a 100%);
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  overflow: hidden;
+}
+.info {
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#bar {
+  background: #00ff66;
+  height: 20px;
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.1s ease-in-out;
+  box-shadow: 0 0 15px #00ff66;
+}
+#bar_container {
+  background: #00220a;
+  border: 2px solid #00ff66;
+  border-radius: 12px;
+  width: 400px;
+  height: 20px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+#status {
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0,255,102,0.5);
+}
+</style>
+<script>
+function DLProgress(e){
+  Percent = (Math.round(e.loaded / e.total * 100));
+  document.getElementById("bar").style.width = Percent + '%';
+  document.getElementById("status").innerHTML = "جاري حفظ ملفات التعديل كاش: " + Percent + '%';
+}
+function DisplayCacheStatus(){
+  setTimeout(function(){document.getElementById("status").innerHTML = "تم حفظ الكاش بنجاح!";}, 1000);
+  setTimeout(function(){window.location.href = "index.html";}, 2500);
+}
+window.applicationCache.addEventListener("downloading", function(){document.getElementById("status").innerHTML = "بدء تحميل ملفات الكاش...";}, false);
+window.applicationCache.addEventListener("progress", DLProgress, false);
+window.applicationCache.addEventListener("cached", DisplayCacheStatus, false);
+window.applicationCache.addEventListener("updateready", function(){window.applicationCache.swapCache(); window.location.reload();}, false);
+window.applicationCache.addEventListener("noupdate", function(){window.location.href = "index.html";}, false);
+window.applicationCache.addEventListener("error", function(){window.location.href = "index.html";}, false);
+</script>
 </head>
 <body>
-
-    <div class="cache-card">
-        <h1>TECN<span>HOMIC</span></h1>
-        <div class="status-msg" id="status">جاري التثبيت وحفظ كاش التعديل تلقائياً...</div>
-        <div class="progress-outline">
-            <div class="progress-fill" id="bar"></div>
-        </div>
-        <div class="percentage" id="percent">0%</div>
-    </div>
-
-    <script>
-        var cache = window.applicationCache;
-        var bar = document.getElementById("bar");
-        var percent = document.getElementById("percent");
-        var status = document.getElementById("status");
-
-        cache.addEventListener('downloading', function() {
-            status.innerText = "جاري تحميل الملفات وحفظها في ذاكرة جهازك...";
-        }, false);
-
-        cache.addEventListener('progress', function(e) {
-            var val = Math.round((e.loaded / e.total) * 100);
-            bar.style.width = val + "%";
-            percent.innerText = val + "%";
-        }, false);
-
-        cache.addEventListener('cached', function() {
-            status.innerText = "اكتمل تثبيت الكاش بنجاح! جاري الانتقال لتشغيل التعديل...";
-            setTimeout(function() {
-                window.location.href = "index.html";
-            }, 1500);
-        }, false);
-
-        cache.addEventListener('updateready', function() {
-            cache.swapCache();
-            window.location.reload();
-        }, false);
-
-        cache.addEventListener('error', function() {
-            // في حال عدم توفر الاتصال أو وجود خطأ، يحولك مباشرة للصفحة الرئيسية لتعمل من الكاش القديم
-            status.innerText = "يعمل الآن من الكاش المخزن سابقاً...";
-            setTimeout(function() {
-                window.location.href = "index.html";
-            }, 1000);
-        }, false);
-    </script>
+<div class="info">
+  <h1 style="font-size: 40px; margin-bottom: 5px;">TECNHOMIC PSFree Host</h1>
+  <div id="status" style="margin-top: 20px;">جاري الاتصال...</div>
+  <div id="bar_container">
+    <div id="bar"></div>
+  </div>
+</div>
 </body>
 </html>
