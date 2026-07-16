@@ -1,10 +1,11 @@
 CACHE MANIFEST 
 
-# v1.0.0
-# TECNHOMIC PSFree Host Offline Cache
+# v1.1.0
+# TECNHOMIC PS4 Offline Cache for 4psf.gt.tc
 
 CACHE:
 index.html
+cache.html
 goldhen.bin
 style.css
 lang.js
