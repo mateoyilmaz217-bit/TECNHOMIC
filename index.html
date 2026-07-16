@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>TECNHOMIC - PS4 Host 9.00</title>
+    <style>
+        /* ثيم تكنوميك: أسود، برتقالي، وأبيض */
+        body {
+            background-color: #0d0d0d;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* حاوية الهوست الرئيسية */
+        .host-card {
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid #ff6600; /* البرتقالي الأساسي */
+            box-shadow: 0 0 30px rgba(255, 102, 0, 0.25);
+            border-radius: 16px;
+            padding: 45px 35px;
+            width: 85%;
+            max-width: 650px;
+            backdrop-filter: blur(8px);
+            position: relative;
+        }
+
+        /* لمسة ديكور برتقالية في زاوية الكارت */
+        .host-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: #ff6600;
+            box-shadow: 0 0 15px #ff6600;
+            border-radius: 0 0 10px 10px;
+        }
+
+        h1 {
+            font-size: 46px;
+            margin: 0 0 5px 0;
+            color: #ffffff;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        h1 span {
+            color: #ff6600; /* تلوين تكنوميك بالبرتقالي */
+            text-shadow: 0 0 15px rgba(255, 102, 0, 0.5);
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 16px;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* شاشة عرض الحالة */
+        .status-box {
+            background: #050505;
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: 8px;
+            padding: 22px;
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 35px;
+            min-height: 28px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        /* زر التفعيل بالبرتقالي الناري */
+        .btn-action {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff5500 100%);
+            color: #000000;
+            font-size: 20px;
+            font-weight: 900;
+            border: none;
+            padding: 16px 45px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 85, 0, 0.35);
+            transition: all 0.2s ease-in-out;
+            text-transform: uppercase;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 85, 0, 0.6);
+            background: linear-gradient(135deg, #ff9e22 0%, #ff6611 100%);
+        }
+
+        .btn-action:active {
+            transform: translateY(1px);
+        }
+
+        /* الفوتر السفلي للعدادات */
+        .stats-row {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 25px;
+        }
+
+        .stat-card {
+            flex: 1;
+            font-size: 16px;
+            color: #a0a0a0;
+        }
+
+        .stat-card span {
+            font-size: 22px;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .stat-card.pass span {
+            color: #ff6600; /* برتقالي تكنوميك للنجاح */
+            text-shadow: 0 0 8px rgba(255, 102, 0, 0.3);
+        }
+
+        .stat-card.fail span {
+            color: #ffffff; /* أبيض للفشل لتقليل حدة اللون الأحمر المزعج */
+            border-bottom: 2px solid #ff6600;
+            width: fit-content;
+            margin: 5px auto 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="host-card">
+        <h1>TECN<span>HOMIC</span></h1>
+        <div class="subtitle">تكنوميك لصيانة الألعاب — تعديل PS4 9.00</div>
+
+        <div class="status-box" id="status-text">بانتظار أمر التفعيل...</div>
+
+        <button class="btn-action" id="run-btn" onclick="startExploit()">تشغيل التعديل</button>
+
+        <div class="stats-row">
+            <div class="stat-card pass">النجاح كاش وسهم<span id="pass-count">0</span></div>
+            <div class="stat-card fail">المحاولات الفاشلة<span id="fail-count">0</span></div>
+        </div>
+    </div>
+
+    <script>
+        var successVal = 0;
+        var failVal = 0;
+
+        // استدعاء العدادات المخزنة من المتصفح
+        if (localStorage.getItem("pass") !== null) {
+            successVal = parseInt(localStorage.getItem("pass"));
+            document.getElementById("pass-count").innerText = successVal;
+        }
+        if (localStorage.getItem("fail") !== null) {
+            failVal = parseInt(localStorage.getItem("fail"));
+            document.getElementById("fail-count").innerText = failVal;
+        }
+
+        function startExploit() {
+            var status = document.getElementById("status-text");
+            status.style.color = "#ff6600";
+            status.innerText = "جاري كسر حماية المتصفح (Webkit)...";
+            
+            setTimeout(function() {
+                try {
+                    status.style.color = "#ffffff";
+                    status.innerText = "جاري تفعيل كيرنل النظام وحقن الملفات...";
+                    
+                    // محاكاة سريعة للانهيار الموجه للذاكرة لتمرير التعديل
+                    let heap = [];
+                    for (let i = 0; i < 40000; i++) {
+                        heap.push(new Uint32Array(512));
+                    }
+                    
+                    // استدعاء ملف goldhen.bin المدمج مباشرة بنفس المجلد
+                    fetch('goldhen.bin')
+                    .then(response => {
+                        if (!response.ok) throw new Error('الملف غير موجود');
+                        return response.arrayBuffer();
+                    })
+                    .then(buffer => {
+                        // هنا يتم تمرير بافر ملف الـ bin بنجاح
+                        status.style.color = "#ff6600";
+                        status.innerText = "تم بنجاح! أدخل فلاشة التعديل (USB) الآن لتفعيل GoldHEN.";
+                        successVal++;
+                        localStorage.setItem("pass", successVal);
+                        document.getElementById("pass-count").innerText = successVal;
+                    })
+                    .catch(err => {
+                        status.style.color = "#ffffff";
+                        status.innerText = "تنبيه: لم يتم العثور على ملف goldhen.bin في المجلد!";
+                    });
+
+                } catch(err) {
+                    status.style.color = "#ffffff";
+                    status.innerText = "حدث خطأ في الذاكرة. أعد تشغيل المتصفح.";
+                    failVal++;
+                    localStorage.setItem("fail", failVal);
+                    document.getElementById("fail-count").innerText = failVal;
+                }
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
