@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!-- saved from url=(0023)https://4psf.gt.tc/?i=1 -->
+<html data-theme="green" data-lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4GAMER PSFree Host</title>
+    <script>
+        (function(){try{var t=localStorage.getItem('ui_theme')||'green';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="./4GAMER PSFree Host_files/style.css">
+    <script src="./4GAMER PSFree Host_files/lang.js.تنزيل"></script>
+    <script defer="" src="./4GAMER PSFree Host_files/theme.js.تنزيل"></script>
+</head>
+<body>
+    <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="التبديل إلى OLED">
+  <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </svg>
+  <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+  </svg>
+</button>
+
+    <!-- D19 — زر تبديل اللغة في الصفحة الجذرية -->
+    <div class="header-controls">
+        <button id="langToggleBtn" class="lang-toggle-btn" onclick="toggleLanguage()" aria-label="Switch language">
+            <span data-i18n="lang_toggle_en">English</span>
+        </button>
+    </div>
+
+    <div class="bg-decoration">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+    </div>
+
+    <div class="container">
+        <div class="header-section">
+            <h1 class="main-title">4GAMER PSFree Host</h1>
+            <p class="subtitle" data-i18n="root_subtitle">اكتشاف إصدار البرنامج الثابت</p>
+        </div>
+
+        <div class="version-selection">
+            <div id="detectionStatus" class="section-title" data-i18n="root_detecting">PS4 ONLY</div>
+
+            <!-- Loading spinner — hidden after detection ends -->
+            <div id="loadingSpinner" class="spinner-row" style="display: none;">
+                <svg class="spin-ring" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+                    <circle cx="14" cy="14" r="10" fill="none" stroke="rgba(16,185,129,0.18)" stroke-width="3"></circle>
+                    <circle cx="14" cy="14" r="10" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="47 16" stroke-linecap="round"></circle>
+                </svg>
+                <span class="spinner-label" data-i18n="root_spinner_label">يتم التحقق من البرنامج الثابت...</span>
+            </div>
+
+            <div id="detectionResult" style="text-align:center; margin:2rem 0;"><div style="font-size:1.2rem; color:#ef4444;">هذه الصفحة تعمل فقط على متصفح PS4.</div></div>
+
+            <!-- Manual selection (hidden by default) -->
+            <div id="manualSelection" style="display:none; margin-top:2rem;">
+                <div class="section-title" style="margin-bottom:1rem;" data-i18n="root_manual_title">اختر إصدار البرنامج الثابت يدويًا</div>
+                <div style="text-align:center;">
+                    <select id="fwSelector" style="padding:0.75rem 1.5rem; font-size:1.1rem; border-radius:8px; background:rgba(99,102,241,0.2); border:2px solid rgba(99,102,241,0.5); color:#fff; cursor:pointer; min-width:200px;">
+                        <option value="505">5.05</option>
+                        <option value="672">6.72</option>
+                        <option value="700">7.xx–8.xx</option>
+                        <option value="900">9.xx</option>
+                    </select>
+                    <br>
+                    <button id="confirmBtn" onclick="confirmManualSelection()" class="btn-ripple-fx" style="margin-top:1rem; padding:0.75rem 2rem; font-size:1.1rem; border-radius:8px; background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(34,197,94,0.3)); border:2px solid rgba(34,197,94,0.7); color:#fff; cursor:pointer; font-weight:600;" data-i18n="root_confirm_btn">تأكيد</button>
+                </div>
+            </div>
+
+            <!-- Countdown display -->
+            <div id="countdownDisplay" style="display:none; text-align:center; margin-top:2rem;">
+                <div style="font-size:1rem; color:#b6b8ff; margin-bottom:0.75rem;" data-i18n="root_redirect_label">إعادة التوجيه خلال</div>
+
+                <div class="countdown-ring-wrap">
+                    <svg width="84" height="84" viewBox="0 0 84 84" style="transform:rotate(-90deg);" aria-hidden="true">
+                        <circle cx="42" cy="42" r="34" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="5"></circle>
+                        <circle id="countdownArc" cx="42" cy="42" r="34" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <span id="countdownNumber" class="countdown-number">3</span>
+                </div>
+
+                <div style="margin-top:1rem;">
+                    <button id="redirectNowBtn" onclick="redirectNow()" class="btn-ripple-fx" style="padding:0.75rem 2rem; font-size:1.1rem; border-radius:8px; background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(139,92,246,0.3)); border:2px solid rgba(139,92,246,0.7); color:#fff; cursor:pointer; font-weight:600;" data-i18n="root_redirect_now">إعادة التوجيه الآن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="credits">
+        <div class="credits-line">
+            <span class="credit-label" data-i18n="credit_owner">المالك</span>: 
+            <a href="https://t.me/q_991" class="telegram-link">Raen</a>
+            <span style="margin:0 1rem;">•</span>
+            <span class="credit-label" data-i18n="credit_dev">المطور</span>: 
+            <a href="https://pspkg.com/" class="telegram-link">PSPKG</a>
+            <span style="margin:0 1rem;">•</span>
+            <span class="credit-label" data-i18n="credit_telegram">تيليجرام</span>: 
+            <a href="https://t.me/C9_9M" class="credit-link" style="color:#008000; font-weight:700; text-decoration:none;">4GAMER</a>
+        </div>
+    </div>
+
+    <script>
+        var detectedRoute = null;
+        var countdownTimer = null;
+        var TOTAL_SECS = 3;
+        var ARC_CIRCUMFERENCE = 214;
+
+        function hideSpinner() {
+            var el = document.getElementById('loadingSpinner');
+            if (el) { el.style.display = 'none'; }
+        }
+
+        function detectFirmware() {
+            var jbDone = '';
+            try { jbDone = localStorage.getItem('jailbreak_done') || ''; } catch(e) {}
+            if (jbDone === '1') {
+                showReturningUserState();
+                return;
+            }
+
+            var ua = navigator.userAgent;
+
+            if (!ua.includes('PlayStation 4')) {
+                hideSpinner();
+                showNonPS4State();
+                return;
+            }
+
+            var fwRegex = /PlayStation 4[\s\/](\d+\.\d+)/i;
+            var match = fwRegex.exec(ua);
+
+            if (!match) {
+                hideSpinner();
+                showDetectionFailedState();
+                return;
+            }
+
+            var fwString = match[1];
+            try { localStorage.setItem('fw_detected', fwString); } catch(e) {}
+
+            var route = determineRoute(fwString);
+
+            if (!route) {
+                hideSpinner();
+                showUnsupportedState(fwString);
+                return;
+            }
+
+            detectedRoute = route;
+            try { localStorage.setItem('fw_route', route); } catch(e) {}
+            hideSpinner();
+            showSupportedState(fwString);
+            startCountdown();
+        }
+
+        function determineRoute(fwString) {
+            if (fwString === '5.05') { return '505'; }
+            if (fwString === '6.72') { return '672'; }
+
+            var parts = fwString.split('.');
+            var major = parseInt(parts[0], 10);
+
+            if (major === 7 || major === 8) { return '700'; }
+            if (major === 9) { return '900'; }
+
+            return null;
+        }
+
+        function showReturningUserState() {
+            hideSpinner();
+            document.getElementById('detectionStatus').textContent = t('root_welcome_back');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1.6rem; color:#10b981; font-weight:700; margin-bottom:0.5rem;">' + t('root_system_ready') + '</div>' +
+                '<div style="font-size:1rem; color:#a4ffba;">' + t('root_welcome_back_msg') + '</div>';
+
+            var savedRoute = '';
+            try { savedRoute = localStorage.getItem('fw_route') || ''; } catch(e) {}
+            if (savedRoute) {
+                detectedRoute = savedRoute;
+                startCountdown();
+            }
+        }
+
+        function showNonPS4State() {
+            document.getElementById('detectionStatus').textContent = t('root_ps4_only');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1.2rem; color:#ef4444;">' + t('root_ps4_only_msg') + '</div>';
+        }
+
+        function showDetectionFailedState() {
+            document.getElementById('detectionStatus').textContent = t('root_detect_fail');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1.2rem; color:#f59e0b;">' + t('root_detect_fail_msg') + '</div>';
+            document.getElementById('manualSelection').style.display = 'block';
+        }
+
+        function showUnsupportedState(fwString) {
+            document.getElementById('detectionStatus').textContent = t('root_unsupported');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1.2rem; color:#ef4444;">' + t('root_unsupported_msg') + '</div>' +
+                '<div style="font-size:1rem; color:#b6b8ff; margin-top:0.5rem;">' + t('root_fw_detected_label') + ' ' + fwString + '</div>';
+        }
+
+        function showSupportedState(fwString) {
+            document.getElementById('detectionStatus').textContent = t('root_detected_ok');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1rem; color:#a4ffba; margin-bottom:0.75rem;">' + t('root_detected_ok') + '</div>' +
+                '<span class="fw-badge">FW ' + fwString + '</span>';
+        }
+
+        function confirmManualSelection() {
+            var selector = document.getElementById('fwSelector');
+            var route = selector.value;
+            var label = selector.options[selector.selectedIndex].text;
+
+            try { localStorage.setItem('fw_route', route); } catch(e) {}
+            detectedRoute = route;
+
+            document.getElementById('manualSelection').style.display = 'none';
+            document.getElementById('detectionStatus').textContent = t('root_selected_ok');
+            document.getElementById('detectionResult').innerHTML =
+                '<div style="font-size:1rem; color:#a4ffba; margin-bottom:0.75rem;">' + t('root_fw_selected_msg') + '</div>' +
+                '<span class="fw-badge">' + label + '</span>';
+
+            startCountdown();
+        }
+
+        function startCountdown() {
+            var display = document.getElementById('countdownDisplay');
+            var numEl = document.getElementById('countdownNumber');
+            var arcEl = document.getElementById('countdownArc');
+
+            display.style.display = 'block';
+
+            var count = TOTAL_SECS;
+            numEl.textContent = String(count);
+            arcEl.setAttribute('stroke-dashoffset', '0');
+
+            countdownTimer = setInterval(function() {
+                count--;
+                if (count > 0) {
+                    numEl.textContent = String(count);
+                    var offset = Math.round(ARC_CIRCUMFERENCE * (1 - count / TOTAL_SECS));
+                    arcEl.setAttribute('stroke-dashoffset', String(offset));
+                } else {
+                    numEl.textContent = '0';
+                    arcEl.setAttribute('stroke-dashoffset', String(ARC_CIRCUMFERENCE));
+                    clearInterval(countdownTimer);
+                    redirectToCache();
+                }
+            }, 1000);
+        }
+
+        function redirectNow() {
+            if (countdownTimer) { clearInterval(countdownTimer); }
+            redirectToCache();
+        }
+
+        function redirectToCache() {
+            if (!detectedRoute) { return; }
+
+            var cachePages = {
+                '505': '505/cache.html',
+                '672': '672/cache.html',
+                '700': '700/cache.html',
+                '900': '900/cache.html'
+            };
+
+            window.location.href = cachePages[detectedRoute];
+        }
+
+        window.addEventListener('load', function() {
+            detectFirmware();
+        });
+    </script>
+
+
+</body></html>
